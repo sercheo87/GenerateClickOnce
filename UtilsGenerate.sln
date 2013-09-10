@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateClickOnceBV", "Gene
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateClickOnceBVCmd", "GenerateClickOnceBVCmd\GenerateClickOnceBVCmd.csproj", "{801ADDAE-7A0B-4067-AB43-D3BBDE21E3DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfacePlugin", "InterfacePlugin\InterfacePlugin.csproj", "{59F2B277-95C7-4E20-A4A2-6079131A7B31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{801ADDAE-7A0B-4067-AB43-D3BBDE21E3DE}.Release|Mixed Platforms.Build.0 = Release|x86
 		{801ADDAE-7A0B-4067-AB43-D3BBDE21E3DE}.Release|x86.ActiveCfg = Release|x86
 		{801ADDAE-7A0B-4067-AB43-D3BBDE21E3DE}.Release|x86.Build.0 = Release|x86
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{59F2B277-95C7-4E20-A4A2-6079131A7B31}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

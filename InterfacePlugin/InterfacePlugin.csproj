@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1AA0875E-C256-47B3-9C84-C3A18AC4B682}</ProjectGuid>
+    <ProjectGuid>{59F2B277-95C7-4E20-A4A2-6079131A7B31}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UtilsGenerate</RootNamespace>
-    <AssemblyName>UtilsGenerate</AssemblyName>
+    <RootNamespace>InterfacePlugin</RootNamespace>
+    <AssemblyName>InterfacePlugin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,19 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SearchProjects.cs" />
+    <Compile Include="ContextFlags.cs" />
+    <Compile Include="IActions.cs" />
+    <Compile Include="MenuProfile.cs" />
+    <Compile Include="Print.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\InterfacePlugin\InterfacePlugin.csproj">
-      <Project>{59F2B277-95C7-4E20-A4A2-6079131A7B31}</Project>
-      <Name>InterfacePlugin</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(TargetPath)" "$(SolutionDir)GenerateClickOnceBVCmd\bin\Debug\Plugins\" /Y/E/C</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

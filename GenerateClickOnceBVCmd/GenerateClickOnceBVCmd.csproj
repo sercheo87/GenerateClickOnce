@@ -47,7 +47,6 @@
     <Compile Include="tools\MenuItem.cs" />
     <Compile Include="tools\Plugin.cs" />
     <Compile Include="tools\ReflectionDll.cs" />
-    <Compile Include="Print.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,6 +54,12 @@
     <Content Include="Plugins\Readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InterfacePlugin\InterfacePlugin.csproj">
+      <Project>{59F2B277-95C7-4E20-A4A2-6079131A7B31}</Project>
+      <Name>InterfacePlugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

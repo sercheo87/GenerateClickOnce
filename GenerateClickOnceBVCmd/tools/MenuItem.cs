@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using InterfacePlugin;
 
 namespace GenerateClickOnceBVCmd.tools
 {
@@ -10,7 +11,7 @@ namespace GenerateClickOnceBVCmd.tools
         public int id { get; set; }
         public string Name { get; set; }
         public string EventItem { get; set; }
-        public string Type { get; set; }
+        public TYPE_MENU Type { get; set; }
         public string Other { get; set; }
     }
 

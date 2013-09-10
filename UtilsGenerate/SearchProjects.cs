@@ -2,55 +2,70 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using InterfacePlugin;
 
 namespace UtilsGenerate
 {
     public class SearchProjects : IActions
     {
         #region "Interface"
-        public void DoAction()
+        public void DoAction(string action)
         {
-            Console.WriteLine("EJECUTADO METODO SIN PARAMETROS");
+            switch (action)
+            {
+                case "GenerateClickOnce":
+                    GenerateClickOnce();
+                    break;
+            }
         }
 
-        public void SetAction(object arg1)
-        {
-            _result = new object[] { arg1.ToString() };
-        }
-
-        object[] _result = new object[] { };
-        public object[] Result
+        public MenuProfile[] MenuActions
         {
             get
             {
-                return _result;
-            }
-            set
-            {
-                _result = value;
+                return new MenuProfile[] { 
+                    new MenuProfile() { Name = "Generar Click Once", Event = "GenerateClickOnce", Config = TYPE_MENU.SUB_MENU_CONFIRMATION }, 
+                    new MenuProfile(){Name="Limpiar Proyectos",Event="CleanProyects", Config= TYPE_MENU.EVENT}
+                };
             }
         }
-
-        public object[] MenuActions
+        public object[] Confirmation
         {
             get
             {
                 return new object[] { 
-                    "Generar Click Once|GenerateClickOnce|M|M",
-                    "Limpiar Proyectos|CleanProyects|E" 
+                    "GenerateClickOnce"
                 };
             }
         }
         #endregion
 
-        public void GenerateClickOnce()
+        object[] _result = new object[] { };
+        public object[] result
         {
-            _result = new object[] { 
-                @"proyecto 1", 
-                @"proyecto 2", 
-                @"proyecto 3", 
-                @"proyecto 4" 
-            };
+            get { return _result; }
+            set { _result = value; }
+        }
+
+        private void GenerateClickOnce()
+        {
+            Print obj = new Print();
+            obj.ClearConsole();
+            obj.PrintTitle("Proyectos Disponibles para la Publicacion");
+            obj.PrintNewLine();
+            obj.PrintString("1: Proyect 1");
+            obj.PrintString("2: Proyect 2");
+            obj.PrintString("3: Proyect 3");
+            obj.PrintNewLine();
+            obj.PrintString("Seleccione los proyectos que desee publicar.....");
+            obj.PrintString("Ejemplo...");
+            obj.PrintString("\t Para un solo Proyecto: 1");
+            obj.PrintString("\t Para Multiples Proyectos: 1 3");
+            obj.PrintString("\t Para Todos los proyectos: A");
+            obj.PrintString("\t Para Cancelar teclee Esc");
+            obj.PrintNewLine();
+
+            object[] selection = obj.GetKeyInt(" ");
         }
     }
 }
