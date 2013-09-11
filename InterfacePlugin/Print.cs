@@ -46,7 +46,7 @@ namespace InterfacePlugin
         public object[] GetKeyInt(string CharParse)
         {
             string temp = Console.ReadLine();
-            return temp.Split(char.Parse( CharParse)) ;
+            return temp.Split(char.Parse(CharParse)) ;
         }
 
         public void GetKeyExample()

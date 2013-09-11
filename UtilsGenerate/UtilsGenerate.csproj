@@ -42,12 +42,19 @@
   <ItemGroup>
     <Compile Include="SearchProjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilsProjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InterfacePlugin\InterfacePlugin.csproj">
       <Project>{59F2B277-95C7-4E20-A4A2-6079131A7B31}</Project>
       <Name>InterfacePlugin</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProjectConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

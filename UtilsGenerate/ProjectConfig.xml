@@ -1,1 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <SolutionLocation>E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\Solution\COBISCorp.tCOBIS.BVI.sln</SolutionLocation>
+    <ClickOnceLocation>C:\Gen_C_O</ClickOnceLocation>
+    <DirectoryOut>C:\ClickOnceOut</DirectoryOut>
+
+    <relations>
+        <relation>
+            <project>PROJECTO1</project>
+            <installer>INSTALADOR1</installer>
+        </relation>
+        <relation>
+            <project>PROYECTO2</project>
+            <installer>INSTALADOR2</installer>
+        </relation>
+        <relation>
+            <project>PROYECTO3</project>
+            <installer>INSTALADOR3</installer>
+        </relation>
+    </relations>
+</config>
