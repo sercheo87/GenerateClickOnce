@@ -1,7 +1,7 @@
 ﻿<config>
     <SolutionLocation>E:\GenerateClickOnce\trunk\Test\Proyecto\ClassLibrary1.sln</SolutionLocation>
     <ClickOnceLocation prefix="Installer">E:\GenerateClickOnce\trunk\Test\ClickOnce</ClickOnceLocation>
-    <DirectoryOut>C:\ClickOnceOut</DirectoryOut>
+    <DirectoryOut>E:\GenerateClickOnce\trunk\OutResult</DirectoryOut>
     
     <!--Toda asociacion implicita de un proyecto contra un click once que defina
     se le da prioridad que el automatizado-->

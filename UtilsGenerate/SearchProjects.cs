@@ -12,7 +12,9 @@ namespace UtilsGenerate
     {
         private string _SOLUTION_PATH = new ReadConfig().GetSolutionLocation();
         private string _CLICK_ONCE_PATH = new ReadConfig().GetClickOnceLocation();
-        private string _CLICK_ONCE_PREFIX = new ReadConfig().GetClickOnceLocation();
+        private string _CLICK_ONCE_PREFIX = new ReadConfig().GetClickOncePefix();
+        private string _CLICK_ONCE_OUT = new ReadConfig().GetDirectoryOut();
+
         bool _PLATAFORM_64BIT = System.Environment.Is64BitOperatingSystem;
 
         #region "Interface"
@@ -99,7 +101,7 @@ namespace UtilsGenerate
                 }
 
                 int maxId = int.Parse(PROJECTS_FINDED.Max(x => x.id).ToString());
-                if ((maxId <= (int.Parse(valor.ToString()))-1))
+                if ((maxId <= (int.Parse(valor.ToString())) - 1))
                 {
                     obj.PrintInfo("Item no encontrado: " + valor);
                     obj.PressKeyToContinue();
@@ -113,7 +115,11 @@ namespace UtilsGenerate
             obj.PrintInfo("Compilando Solucion....");
 
             //COMPILE SOLUTION
-            RunDevEnv(_SOLUTION_PATH);
+            if (!RunDevEnv(_SOLUTION_PATH))
+            {
+                obj.PrintError("No se puede continuar error en la compilación del proyecto.");
+                return;
+            }
 
             obj.PrintString("Iniciando Generacion de Click Once....");
             foreach (object valor in selection)
@@ -131,7 +137,7 @@ namespace UtilsGenerate
                 if (string.IsNullOrEmpty(proj.ClickOnceSolution))
                 {
                     clickOnce = (DtoProject)CLICK_ONCE_FINDED
-                         .Where(x => x.Name == string.Concat(proj.Name, ".", _CLICK_ONCE_PREFIX))
+                        .Where(x => x.Name == (string.IsNullOrEmpty(_CLICK_ONCE_PREFIX) ? proj.Name : string.Concat(proj.Name, ".", _CLICK_ONCE_PREFIX)))
                          .SingleOrDefault();
                 }
                 else
@@ -151,7 +157,13 @@ namespace UtilsGenerate
                 }
 
                 //PUBLISH PROJECT
-                RunMsbuild(clickOnce.FullPath);
+                if (!RunMsbuild(clickOnce.FullPath))
+                {
+                    if (!obj.ShowQuestionContinue())
+                    {
+                        break;
+                    }
+                }
             }
         }
 
@@ -161,24 +173,41 @@ namespace UtilsGenerate
             GenerateClickOnce();
         }
 
-        private void RunMsbuild(string Project)
+        private bool RunMsbuild(string Project)
         {
             string MSBUILD_ENV = @"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe";
             string ARGUMENTS_MSBUILD = string.Format(@" {0} /t:Clean;Rebuild;Publish /property:BootstrapperEnabled=false /property:PublishVersion='$(Proj.AssemblyVersion)'", Project);
-            RunCommand(MSBUILD_ENV, ARGUMENTS_MSBUILD);
+            return RunCommand(MSBUILD_ENV, ARGUMENTS_MSBUILD);
         }
 
-        private void RunDevEnv(string Solution)
+        private bool RunDevEnv(string Solution)
         {
+            if (!Directory.Exists(_CLICK_ONCE_OUT))
+            {
+                Directory.CreateDirectory(_CLICK_ONCE_OUT);
+            }
+
+            string oLog = Path.Combine(_CLICK_ONCE_OUT, string.Concat(Path.GetFileNameWithoutExtension(Solution), ".log"));
+            string oOut = Path.Combine(_CLICK_ONCE_OUT, string.Concat(Path.GetFileNameWithoutExtension(Solution), ".out"));
+            if (!File.Exists(oLog))
+            {
+                File.WriteAllText(oLog, string.Empty);
+            }
+            if (!File.Exists(oOut))
+            {
+                File.WriteAllText(oOut, string.Empty);
+            }
+
             string DEV_ENV = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Microsoft Visual Studio 10.0\Common7\IDE\devenv.com");
-            string ARGUMENTS = string.Format(" {0} /rebuild ", Solution);
-            RunCommand(DEV_ENV, ARGUMENTS);
+            string ARGUMENTS = string.Format("/Rebuild Release \"{0}\" /out \"{1}\" /log \"{2}\"", Solution, oOut, oLog);
+            return RunCommand(DEV_ENV, ARGUMENTS);
         }
 
-        private void RunCommand(string ProgramPath, string arguments)
+        private bool RunCommand(string ProgramPath, string arguments)
         {
             var tempColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
+
             var process = new Process();
             process.StartInfo = new ProcessStartInfo(ProgramPath);
             process.StartInfo.Arguments = arguments;
@@ -188,7 +217,19 @@ namespace UtilsGenerate
             process.Start();
             process.BeginOutputReadLine();
             process.WaitForExit();
+
             Console.ForegroundColor = tempColor;
+
+            if (process.ExitCode == 0)
+            {
+                new Print().PrintInfo("Se ha ejecutado la tarea.");
+                return true;
+            }
+            else
+            {
+                new Print().PrintError("Se encontraron errores en la ejecucion.");
+                return false;
+            }
         }
     }
 }

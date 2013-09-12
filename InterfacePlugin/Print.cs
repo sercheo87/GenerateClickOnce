@@ -31,12 +31,12 @@ namespace InterfacePlugin
             Console.ForegroundColor = tempColor;
         }
 
-        public void PrintInfo(string arg1)
+        public void PrintInfo(string arg1,bool with_tag=true)
         {
             var tempColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
 
-            Console.WriteLine(string.Format("INFO: {0}", arg1));
+            Console.WriteLine(string.Concat((with_tag?"INFO:":""),string.Format("{0}", arg1)));
 
             Console.ForegroundColor = tempColor;
         }
@@ -59,6 +59,21 @@ namespace InterfacePlugin
             PrintString(arg1);
             PrintInterline();
             PrintNewLine();
+        }
+
+        public bool ShowQuestionContinue()
+        {
+            PrintNewLine();
+            PrintInfo("Desea continuar con la ejecucion??? S/N",false);
+            string selection = Console.ReadLine();
+            if (selection.ToUpper().Equals("S"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #region Parse Key Input
