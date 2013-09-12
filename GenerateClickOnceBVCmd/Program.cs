@@ -69,7 +69,7 @@ namespace GenerateClickOnceBVCmd
 
         static string GetDll(string arg1)
         {
-            return string.Concat(@"Plugins\", arg1);
+            return string.Concat(@"E:\GenerateClickOnce\GenerateClickOnceBVCmd\bin\Debug\Plugins\", arg1);
         }
 
         static void ShowMenuDashboard(Print objPrint, List<Plugin> CollectionPlugins, List<object[]> _MENU, ReflectionDll _ReflectionDll)

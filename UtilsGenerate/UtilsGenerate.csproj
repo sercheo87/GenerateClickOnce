@@ -40,10 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReadConfig.cs" />
+    <Compile Include="Class\ReadConfig.cs" />
     <Compile Include="SearchProjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UtilsProjects.cs" />
+    <Compile Include="Class\UtilsProjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InterfacePlugin\InterfacePlugin.csproj">
@@ -59,7 +59,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(TargetPath)" "$(SolutionDir)GenerateClickOnceBVCmd\bin\Debug\Plugins\" /Y/E/C</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(TargetPath)" "$(SolutionDir)GenerateClickOnceBVCmd\bin\Debug\Plugins\" /Y/E/C
+XCOPY "$(TargetDir)ProjectConfig.xml" "$(SolutionDir)GenerateClickOnceBVCmd\bin\Debug\Plugins\" /Y/E/C</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
