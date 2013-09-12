@@ -1,14 +1,14 @@
 ﻿<config>
-    <SolutionLocation>E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\Solution\COBISCorp.tCOBIS.BVI.sln</SolutionLocation>
-    <ClickOnceLocation prefix="installer">E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\ClickOnce</ClickOnceLocation>
+    <SolutionLocation>E:\GenerateClickOnce\trunk\ClassLibrary1\ClassLibrary1.csproj</SolutionLocation>
+    <ClickOnceLocation prefix="Installer">E:\GenerateClickOnce\trunk\ClassLibary1.Installer</ClickOnceLocation>
     <DirectoryOut>C:\ClickOnceOut</DirectoryOut>
     
     <!--Toda asociacion implicita de un proyecto contra un click once que defina
     se le da prioridad que el automatizado-->
     <relations>
-        <relation>
+        <!--<relation>
             <project>COBISCorp.tCOBIS.BVI</project>
             <installer>COBISCorp.tCOBIS.BVI.Resources.Installer</installer>
-        </relation>
+        </relation>-->
     </relations>
 </config>

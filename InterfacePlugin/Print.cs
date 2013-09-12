@@ -36,7 +36,7 @@ namespace InterfacePlugin
             var tempColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
 
-            Console.WriteLine(string.Format("ERROR: {0}", arg1));
+            Console.WriteLine(string.Format("INFO: {0}", arg1));
 
             Console.ForegroundColor = tempColor;
         }
