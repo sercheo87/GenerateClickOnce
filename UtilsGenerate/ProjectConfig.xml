@@ -1,6 +1,6 @@
 ﻿<config>
-    <SolutionLocation>E:\GenerateClickOnce\trunk\ClassLibrary1\ClassLibrary1.csproj</SolutionLocation>
-    <ClickOnceLocation prefix="Installer">E:\GenerateClickOnce\trunk\ClassLibary1.Installer</ClickOnceLocation>
+    <SolutionLocation>E:\GenerateClickOnce\trunk\Test\Proyecto\ClassLibrary1.sln</SolutionLocation>
+    <ClickOnceLocation prefix="Installer">E:\GenerateClickOnce\trunk\Test\ClickOnce</ClickOnceLocation>
     <DirectoryOut>C:\ClickOnceOut</DirectoryOut>
     
     <!--Toda asociacion implicita de un proyecto contra un click once que defina
