@@ -1,21 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<config>
+﻿<config>
     <SolutionLocation>E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\Solution\COBISCorp.tCOBIS.BVI.sln</SolutionLocation>
-    <ClickOnceLocation>C:\Gen_C_O</ClickOnceLocation>
+    <ClickOnceLocation prefix="installer">E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\ClickOnce</ClickOnceLocation>
     <DirectoryOut>C:\ClickOnceOut</DirectoryOut>
-
+    
+    <!--Toda asociacion implicita de un proyecto contra un click once que defina
+    se le da prioridad que el automatizado-->
     <relations>
         <relation>
-            <project>PROJECTO1</project>
-            <installer>INSTALADOR1</installer>
-        </relation>
-        <relation>
-            <project>PROYECTO2</project>
-            <installer>INSTALADOR2</installer>
-        </relation>
-        <relation>
-            <project>PROYECTO3</project>
-            <installer>INSTALADOR3</installer>
+            <project>COBISCorp.tCOBIS.BVI</project>
+            <installer>COBISCorp.tCOBIS.BVI.Resources.Installer</installer>
         </relation>
     </relations>
 </config>

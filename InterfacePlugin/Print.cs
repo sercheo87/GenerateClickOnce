@@ -21,9 +21,36 @@ namespace InterfacePlugin
             Console.WriteLine(string.Format("{0}", arg1));
         }
 
+        public void PrintError(string arg1)
+        {
+            var tempColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine(string.Format("ERROR: {0}", arg1));
+
+            Console.ForegroundColor = tempColor;
+        }
+
+        public void PrintInfo(string arg1)
+        {
+            var tempColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(string.Format("ERROR: {0}", arg1));
+
+            Console.ForegroundColor = tempColor;
+        }
+
         public void PrintNewLine()
         {
             Console.WriteLine("");
+        }
+
+        public void PressKeyToContinue()
+        {
+            Console.WriteLine("Presione una tecla para continuar...");
+            Console.ReadLine();
+
         }
 
         public void PrintTitle(string arg1)
@@ -46,7 +73,8 @@ namespace InterfacePlugin
         public object[] GetKeyInt(string CharParse)
         {
             string temp = Console.ReadLine();
-            return temp.Split(char.Parse(CharParse)) ;
+            string[] ret = temp.Split(char.Parse(CharParse));
+            return ret;
         }
 
         public void GetKeyExample()

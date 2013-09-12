@@ -10,6 +10,11 @@ namespace UtilsGenerate
 {
     public class SearchProjects : IActions
     {
+        private string _SOLUTION_PATH = new ReadConfig().GetSolutionLocation();
+        private string _CLICK_ONCE_PATH = new ReadConfig().GetClickOnceLocation();
+        private string _CLICK_ONCE_PREFIX = new ReadConfig().GetClickOnceLocation();
+        bool _PLATAFORM_64BIT = System.Environment.Is64BitOperatingSystem;
+
         #region "Interface"
         public void DoAction(string action)
         {
@@ -56,10 +61,12 @@ namespace UtilsGenerate
             obj.PrintTitle("Proyectos Disponibles para la Publicacion");
             obj.PrintNewLine();
 
-            DtoProject[] items = new UtilsProjects().FindProjects(@"E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\ClickOnce");
-            foreach (DtoProject item in items)
+            DtoProject[] PROJECTS_FINDED = new UtilsProjects().FindProjects(Directory.GetParent(_SOLUTION_PATH).ToString());
+            DtoProject[] CLICK_ONCE_FINDED = new UtilsProjects().FindProjects(_CLICK_ONCE_PATH);
+
+            foreach (DtoProject project in PROJECTS_FINDED)
             {
-                obj.PrintString(string.Format("{0}: {1}", item.id, item.Name));
+                obj.PrintString(string.Format("{0}: {1}", project.id, project.Name));
             }
 
             obj.PrintNewLine();
@@ -73,39 +80,99 @@ namespace UtilsGenerate
 
             object[] selection = obj.GetKeyInt(" ");
 
+            //validacion de seleccion nula
+            if (selection == null || selection.Length <= 0)
+            {
+                obj.PrintString("Error seleccion incorrecta");
+                obj.PressKeyToContinue();
+                ReloadMenu();
+            }
+
+            //validacion de cada proyecto seleccionado
             foreach (object valor in selection)
             {
                 if (string.IsNullOrEmpty(valor.ToString()))
                 {
-                    GenerateClickOnce();
+                    obj.PrintInfo("Item no encontrado: " + valor);
+                    obj.PressKeyToContinue();
+                    ReloadMenu();
                 }
 
-                int maxId = int.Parse(items.Max(x => x.id).ToString());
-                if ((maxId <= (int.Parse(valor.ToString()))))
+                int maxId = int.Parse(PROJECTS_FINDED.Max(x => x.id).ToString());
+                if ((maxId <= (int.Parse(valor.ToString()))-1))
                 {
-                    obj.PrintString("Error Item no encontrado: " + valor);
-                    Console.Read();
-                    GenerateClickOnce();
+                    obj.PrintInfo("Item no encontrado: " + valor);
+                    obj.PressKeyToContinue();
+                    ReloadMenu();
                 }
             }
-            
-            bool is64 = System.Environment.Is64BitOperatingSystem;
+
+            obj.ClearConsole();
+            obj.PrintString("Iniciando espere un momento...");
+
+            obj.PrintInfo("Compilando Solucion....");
 
             //COMPILE SOLUTION
-            string DEV_ENV = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Microsoft Visual Studio 10.0\Common7\IDE\devenv.com");
-            string ARGUMENTS=string.Format(" {0} /rebuild ", @"E:\Views\CEN_247\VB_IB\Dev\FE\Admin\Src\CEN\Solution\COBISCorp.tCOBIS.BVI.sln");
-            RunCommand(DEV_ENV, ARGUMENTS);
+            RunDevEnv(_SOLUTION_PATH);
 
+            obj.PrintString("Iniciando Generacion de Click Once....");
             foreach (object valor in selection)
             {
-                var projSel = items.Where(x => x.id == int.Parse(valor.ToString())).Select(x => x.FullPath).ToArray();
-                string project = projSel[0];
+                DtoProject proj = (DtoProject)PROJECTS_FINDED.Where(x => x.id == int.Parse(valor.ToString())).SingleOrDefault();
+                DtoProject clickOnce;
+
+                if (proj == null)
+                {
+                    obj.PrintError("No se ha encontrado el proyecto.");
+                    obj.PressKeyToContinue();
+                    ReloadMenu();
+                }
+
+                if (string.IsNullOrEmpty(proj.ClickOnceSolution))
+                {
+                    clickOnce = (DtoProject)CLICK_ONCE_FINDED
+                         .Where(x => x.Name == string.Concat(proj.Name, ".", _CLICK_ONCE_PREFIX))
+                         .SingleOrDefault();
+                }
+                else
+                {
+                    clickOnce = (DtoProject)CLICK_ONCE_FINDED
+                        .Where(x => x.Name == proj.ClickOnceSolution)
+                        .SingleOrDefault();
+                }
+
+                obj.PrintInfo("Generando Click Once....");
+
+                if (clickOnce == null)
+                {
+                    obj.PrintError("No se ha encontrado el proyecto del Click Once asociado.");
+                    obj.PressKeyToContinue();
+                    ReloadMenu();
+                }
 
                 //PUBLISH PROJECT
-                string MSBUILD_ENV = @"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe";
-                string ARGUMENTS_MSBUILD = string.Format(@" {0} /t:Clean;Rebuild;Publish /property:BootstrapperEnabled=false /property:PublishVersion='$(Proj.AssemblyVersion)'", project);
-                RunCommand(MSBUILD_ENV, ARGUMENTS_MSBUILD);
+                RunMsbuild(clickOnce.FullPath);
             }
+        }
+
+
+        private void ReloadMenu()
+        {
+            GenerateClickOnce();
+        }
+
+        private void RunMsbuild(string Project)
+        {
+            string MSBUILD_ENV = @"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe";
+            string ARGUMENTS_MSBUILD = string.Format(@" {0} /t:Clean;Rebuild;Publish /property:BootstrapperEnabled=false /property:PublishVersion='$(Proj.AssemblyVersion)'", Project);
+            RunCommand(MSBUILD_ENV, ARGUMENTS_MSBUILD);
+        }
+
+        private void RunDevEnv(string Solution)
+        {
+            string DEV_ENV = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Microsoft Visual Studio 10.0\Common7\IDE\devenv.com");
+            string ARGUMENTS = string.Format(" {0} /rebuild ", Solution);
+            RunCommand(DEV_ENV, ARGUMENTS);
         }
 
         private void RunCommand(string ProgramPath, string arguments)
