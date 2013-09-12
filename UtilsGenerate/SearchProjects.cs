@@ -166,37 +166,55 @@ namespace UtilsGenerate
                 }
             }
         }
-
-
+        
         private void ReloadMenu()
         {
             GenerateClickOnce();
         }
+        
+        private string GetFilePathLog(string name, string type,string folderOptional="")
+        {
+            string folderParent = _CLICK_ONCE_OUT;
+            
+            //organizacion de carpetas por fecha
+            string sDate = DateTime.Now.ToString( "yyyy-MM-dd HH-mm");
+
+            folderParent = Path.Combine(folderParent, sDate);
+
+            //carpeta opcional
+            if (!string.IsNullOrEmpty(folderOptional))
+            {
+                folderParent = Path.Combine(folderParent, folderOptional);
+            }
+
+            //creacion del archivo del log
+            if (!Directory.Exists(folderParent))
+            {
+                Directory.CreateDirectory(folderParent);
+            }
+
+            string oLog = Path.Combine(folderParent, string.Concat(Path.GetFileNameWithoutExtension(name), ".", type));
+            if (!File.Exists(oLog))
+            {
+                File.WriteAllText(oLog, string.Empty);
+            }
+
+            return oLog;
+        }
 
         private bool RunMsbuild(string Project)
         {
+            string oLog = GetFilePathLog(Project, "log","ClickOnce");
+
             string MSBUILD_ENV = @"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe";
-            string ARGUMENTS_MSBUILD = string.Format(@" {0} /t:Clean;Rebuild;Publish /property:BootstrapperEnabled=false /property:PublishVersion='$(Proj.AssemblyVersion)'", Project);
+            string ARGUMENTS_MSBUILD = string.Format(@" {0} /t:Clean;Rebuild;Publish /property:BootstrapperEnabled=false /property:PublishVersion='$(Proj.AssemblyVersion)' /l:FileLogger,Microsoft.Build.Engine;logfile={1}", Project, string.Concat("\"", oLog, "\""));
             return RunCommand(MSBUILD_ENV, ARGUMENTS_MSBUILD);
         }
 
         private bool RunDevEnv(string Solution)
         {
-            if (!Directory.Exists(_CLICK_ONCE_OUT))
-            {
-                Directory.CreateDirectory(_CLICK_ONCE_OUT);
-            }
-
-            string oLog = Path.Combine(_CLICK_ONCE_OUT, string.Concat(Path.GetFileNameWithoutExtension(Solution), ".log"));
-            string oOut = Path.Combine(_CLICK_ONCE_OUT, string.Concat(Path.GetFileNameWithoutExtension(Solution), ".out"));
-            if (!File.Exists(oLog))
-            {
-                File.WriteAllText(oLog, string.Empty);
-            }
-            if (!File.Exists(oOut))
-            {
-                File.WriteAllText(oOut, string.Empty);
-            }
+            string oOut = GetFilePathLog(Solution, "out", "Projects");
+            string oLog = GetFilePathLog(Solution, "log", @"Projects\log");
 
             string DEV_ENV = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Microsoft Visual Studio 10.0\Common7\IDE\devenv.com");
             string ARGUMENTS = string.Format("/Rebuild Release \"{0}\" /out \"{1}\" /log \"{2}\"", Solution, oOut, oLog);
