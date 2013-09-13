@@ -85,6 +85,11 @@ namespace InterfacePlugin
             return ret;
         }
 
+        public string GetKeyString()
+        {
+            return Console.ReadLine();
+        }
+
         public object[] GetKeyInt(string CharParse)
         {
             string temp = Console.ReadLine();

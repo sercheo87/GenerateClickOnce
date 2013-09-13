@@ -2,7 +2,52 @@
     <SolutionLocation>E:\GenerateClickOnce\trunk\Test\Proyecto\ClassLibrary1.sln</SolutionLocation>
     <ClickOnceLocation prefix="Installer">E:\GenerateClickOnce\trunk\Test\ClickOnce</ClickOnceLocation>
     <DirectoryOut>E:\GenerateClickOnce\trunk\OutResult</DirectoryOut>
-    
+
+    <!--Configuraciones basecas de generacion-->
+    <general>
+        <!--S/N-->
+        <zip>N</zip>
+    </general>
+
+    <distribution active="S">
+        <!--S/N-->
+        <replace>N</replace>
+        <path_destination></path_destination>
+    </distribution>
+
+    <sql active="S">
+        <!--S/N-->
+        <template>
+            <!--Items de Utilizacion-->
+            <!-- {0} NOMBRE-->
+            <!-- {1} VERSION-->
+            <!-- [NEWLINE] Nueva Linea-->
+            <!-- [TAB] Tabulador-->
+            <!-- [NTAB] Nueva Linea + Tabulador-->
+            <header>
+                use cobis 
+                [NEWLINE]go 
+                [NEWLINE]begin tran
+            </header>
+            <body>
+                [NTAB]update cobis..an_module_group set mg_version='{1}' where mg_name='{0}'
+            </body>
+            <footer>
+                [NEWLINE]if @@error!=0
+                [NEWLINE]begin
+                [NTAB]roolback tran
+                [NTAB]print 'Error en actualizacion de version'
+                [NEWLINE]end
+                [NEWLINE]else
+                [NEWLINE]begin
+                [NTAB]commit tran
+                [NTAB]print 'Se actualizo la version correctamente'
+                [NEWLINE]end
+                [NEWLINE]go
+            </footer>
+        </template>
+    </sql>
+
     <!--Toda asociacion implicita de un proyecto contra un click once que defina
     se le da prioridad que el automatizado-->
     <relations>
